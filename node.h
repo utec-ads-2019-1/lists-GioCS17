@@ -7,9 +7,17 @@ struct Node {
     Node<T>* next;
     Node<T>* prev;
 
+    void killSelfToEnd(Node<T>* step){
+    	if(step==nullptr)
+		    return;
+    	killSelfToEnd(step->next);
+    	step->killSelf();
+	}
+
     void killSelf() {
-        // TODO
+	    delete this;
     }
 };
+
 
 #endif

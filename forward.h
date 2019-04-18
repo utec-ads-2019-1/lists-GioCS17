@@ -3,6 +3,7 @@
 
 #include "list.h"
 #include "iterators/forward_iterator.h"
+#include<typeinfo>
 
 template <typename T>
 class ForwardList : public List<T> {
@@ -10,51 +11,122 @@ class ForwardList : public List<T> {
         ForwardList() : List<T>() {}
 
         T front() {
-            // TODO
+		if(empty())
+			throw runtime_error("La lista no cuenta con heap\n");
+		return this->head->data;
         }
 
         T back() {
-            // TODO
+		if(empty())
+			throw runtime_error("La lista no cuenta con tail\n");
+		return this->tail->data;
         }
 
         void push_front(T value) {
-            // TODO
+		if(!empty()){
+			Node<T> *nuevo=new Node<T>{value,nullptr,nullptr};
+			nuevo->next=this->head;
+			this->head=nuevo;
+		}
+		else
+			this->head=this->tail=new Node<T>{value,nullptr,nullptr};
         }
 
         void push_back(T value) {
-            // TODO
+		if(!empty()){
+			Node<T> *nuevo=new Node<T>{value,nullptr,nullptr};
+			this->tail->next=nuevo;
+			this->tail=nuevo;
+		}
+		else
+			this->head=this->tail=new Node<T>{value,nullptr,nullptr};
         }
 
         void pop_front() {
-            // TODO
+		if(empty())
+			throw runtime_error("La lista se encuentra vacia\n");
+		Node<T> *tmp=this->head->next;
+		this->head->killSelf();
+		this->head=tmp;
         }
 
         void pop_back() {
-            // TODO
+		if(empty())
+			throw runtime_error("La lista se encuentra vacia\n");
+
+		Node<T> *tmp=this->head;
+		while(tmp->next!=this->tail)
+			tmp=tmp->next;
+
+		this->tail->killSelf();
+		this->tail=tmp;
+		this->tail->next=nullptr;
         }
 
         T operator[](int index) {
-            // TODO
+
+
+		if(index<0)
+			throw runtime_error("Indice debe ser positivo o 0\n");
+		if(index>size()-1)
+			throw runtime_error("Indice ingresado es mayor a la cantidad de elementos de la lista\n");
+
+		Node<T> *tmp=this->head;
+		while(index--)
+			tmp=tmp->next;
+		
+		
+		return tmp->data;
         }
 
         bool empty() {
-            // TODO
+	    return this->head==nullptr;
         }
 
         int size() {
-            // TODO
+		int sizef=0;
+		Node<T> *tmp=this->head;
+		while(tmp!=nullptr){
+			tmp=tmp->next;
+			sizef++;
+		}
+		return sizef;
         }
 
         void clear() {
-            // TODO
+		if(empty())
+			return;
+		
+		this->head->killSelfToEnd(this->head);
+		this->head=this->tail=nullptr;
         }
 
         void sort() {
-            // TODO
+		int sizef=size();
+		Node<T>* array[sizef];
+		int l=0,u=size()-1;
+		if(l<u){
+		}
         }
     
         void reverse() {
-            // TODO
+		int sizef=size();
+		Node<T>* array[sizef];
+		Node<T>* tmp=this->head;
+		for(int i=0;i<sizef;i++){
+			array[i]=tmp;
+			tmp=tmp->next;
+		}
+		for(int i=0;i<sizef/2;i++){
+			tmp=array[i];
+			array[i]=array[sizef-i-1];
+			array[sizef-i-1]=tmp;
+		}
+		for(int i=0;i<sizef-1;i++)
+			array[i]->next=array[i+1];
+		this->head=array[0];
+		this->tail=array[sizef-1];
+		this->tail->next=nullptr;
         }
 
         string name() {
@@ -62,15 +134,26 @@ class ForwardList : public List<T> {
         }
 
         ForwardIterator<T> begin() {
-            // TODO
+		return ForwardIterator<T>(this->head);
         }
 
-	    ForwardIterator<T> end() {
-            // TODO
+	ForwardIterator<T> end() {
+		return nullptr;
         }
 
         void merge(ForwardList<T> list) {
-            // TODO
+		ForwardIterator<T> tmp=list.begin();
+		cout<<"inicio merge"<<endl;
+		/*while(tmp!=list.end()){
+			Node<T> *nuevo=new Node<T>;
+			nuevo->data=*tmp;
+			tmp++;
+		}
+		*/
+		cout<<"type "<<typeid(tmp).name()<<endl;
+		//tmp++;
+		cout<<"tmp"<<*(tmp)<<endl;
+		cout<<"finalizo merge"<<endl;
         }
 };
 
