@@ -28,7 +28,12 @@ class List {
         virtual string name() = 0;
 
         ~List() {
-            // TODO
+		if(this->head->prev==this->tail){
+			this->head->killSelfToEndCircular(this->head->next,this->head);
+			this->head->killSelf();
+		}
+		else
+			this->head->killSelfToEnd(this->head);
         }
 };
 

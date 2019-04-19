@@ -1,7 +1,7 @@
 #include "tester.h"
 
 void Tester::execute() {
-    Collection collections[] = { forward_list/*, linked_list, circular_list */};
+    Collection collections[] = { forward_list, linked_list, circular_list };
     size_t numberOfCollections = sizeof(collections) / sizeof(collections[0]);
 
     for (int i = 0; i < numberOfCollections; i++) {
@@ -70,11 +70,10 @@ void Tester::testList(Collection collection) {
 
     list->push_back(elements[6]);
     list->push_back(elements[7]);
-   /* list->sort();
+    list->sort();
 
     ASSERT(isSorted(list), "The " + list->name() + " sort is not working");
 
-    */
     list->clear();
     ASSERT(list->size() == 0, "The " + list->name() + " size or clear is not working");
     ASSERT(list->empty() == true, "The " + list->name() + " empty is not working");
@@ -109,8 +108,6 @@ void Tester::testForward(ForwardList<T>* list) {
     T* elements = mocker.generateRandomArray<T>(size);
 
     ForwardList<T>* list1 = new ForwardList<T>;
-    cout<<"elemento generado "<<endl;
-    cout<<elements[0]<<endl;
     list1->push_back(elements[0]);
     list1->push_back(elements[1]);
     list1->push_back(elements[2]);
@@ -119,14 +116,12 @@ void Tester::testForward(ForwardList<T>* list) {
 
     list->merge(*list1);
     ASSERT(list->size() == 5, "The " + list->name() + " merge is not working");
-/*
     auto it = list->begin();
     ++it;
     ASSERT(*it == elements[1], "The " + list->name() + " iterator is not working");
     ++it;
     ++it;
     ASSERT(it != list->end(), "The " + list->name() + " iterator is not working");
-    */
 }
 
 template <typename T>

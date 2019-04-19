@@ -13,6 +13,12 @@ struct Node {
     	killSelfToEnd(step->next);
     	step->killSelf();
 	}
+    void killSelfToEndCircular(Node<T>*step,Node<T>*stop){
+	    if(step==stop)
+		    return;
+	    killSelfToEndCircular(step->next,stop);
+	    step->killSelf();
+    }
 
     void killSelf() {
 	    delete this;

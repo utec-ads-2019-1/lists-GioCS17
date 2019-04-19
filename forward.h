@@ -65,7 +65,6 @@ class ForwardList : public List<T> {
 
         T operator[](int index) {
 
-
 		if(index<0)
 			throw runtime_error("Indice debe ser positivo o 0\n");
 		if(index>size()-1)
@@ -102,31 +101,41 @@ class ForwardList : public List<T> {
         }
 
         void sort() {
-		int sizef=size();
-		Node<T>* array[sizef];
-		int l=0,u=size()-1;
-		if(l<u){
+		if(empty())
+			throw runtime_error("la lista se encuentra vacia");
+		bool faro=true;
+		while(faro){
+			faro=false;
+			Node<T>* tmp=this->head; 
+			while(tmp->next!=nullptr){
+				if(tmp->data>tmp->next->data){
+					T valuetmp=tmp->data;
+					tmp->data=tmp->next->data;
+					tmp->next->data=valuetmp;
+					faro=true;
+				}
+				tmp=tmp->next;
+			}
 		}
+
         }
     
         void reverse() {
-		int sizef=size();
-		Node<T>* array[sizef];
+		if(empty())
+			throw runtime_error("la lista se encuentra vacia");
+		ForwardList<T> list;
 		Node<T>* tmp=this->head;
-		for(int i=0;i<sizef;i++){
-			array[i]=tmp;
+		while(tmp!=nullptr){
+			list.push_front(tmp->data);
 			tmp=tmp->next;
 		}
-		for(int i=0;i<sizef/2;i++){
-			tmp=array[i];
-			array[i]=array[sizef-i-1];
-			array[sizef-i-1]=tmp;
+		ForwardIterator<T> t=list.begin();
+		clear();
+		while(t!=nullptr){
+			this->push_back(*t);
+			++t;
 		}
-		for(int i=0;i<sizef-1;i++)
-			array[i]->next=array[i+1];
-		this->head=array[0];
-		this->tail=array[sizef-1];
-		this->tail->next=nullptr;
+
         }
 
         string name() {
@@ -143,17 +152,10 @@ class ForwardList : public List<T> {
 
         void merge(ForwardList<T> list) {
 		ForwardIterator<T> tmp=list.begin();
-		cout<<"inicio merge"<<endl;
-		/*while(tmp!=list.end()){
-			Node<T> *nuevo=new Node<T>;
-			nuevo->data=*tmp;
-			tmp++;
+		while(tmp!=nullptr){
+			this->push_back(*tmp);
+			++tmp;
 		}
-		*/
-		cout<<"type "<<typeid(tmp).name()<<endl;
-		//tmp++;
-		cout<<"tmp"<<*(tmp)<<endl;
-		cout<<"finalizo merge"<<endl;
         }
 };
 

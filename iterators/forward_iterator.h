@@ -19,13 +19,16 @@ class ForwardIterator : public Iterator<T> {
         }
 
         ForwardIterator<T> operator++(){
-		cout<<"entro a ++"<<endl;
+		if(this->current==nullptr)
+			throw runtime_error("Operacion no valida ++");
 		this->current=this->current->next;
-		return this;
+		return (*this);
         }
 
         T operator*() {
-		cout<<"entro a *"<<endl;
+		if(this->current==nullptr)
+			throw runtime_error("Operacion no valida *");
+		
 		return this->current->data;
         }
 };

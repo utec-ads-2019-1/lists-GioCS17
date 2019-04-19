@@ -95,31 +95,39 @@ class LinkedList : public List<T> {
         }
 
         void sort() {
-            // TODO
+		if(empty())
+			throw runtime_error("La lista se encuentra vacia");
+		bool faro=true;
+		while(faro){
+			faro=false;
+			Node<T>*tmp=this->head;
+			while(tmp->next!=nullptr){
+				if(tmp->data>tmp->next->data){
+					faro=true;
+					T valuetmp=tmp->next->data;
+					tmp->next->data=tmp->data;
+					tmp->data=valuetmp;
+				}
+				tmp=tmp->next;
+			}
+		}
         }
     
         void reverse() {
-		int sizel=size();
-		Node<T>* array[sizel];
+		if(empty())
+			throw runtime_error("La lista se encuentra vacia");
+		LinkedList<T> list;
 		Node<T>* tmp=this->head;
-		for(int i=0;i<sizel;i++){
-			array[i]=tmp;
+		while(tmp!=nullptr){
+			list.push_front(tmp->data);
 			tmp=tmp->next;
 		}
-		for(int i=0;i<sizel/2;i++){
-			tmp=array[i];
-			array[i]=array[sizel-1-i];
-			array[sizel-1-i]=tmp;
+		clear();
+		BidirectionalIterator<T> t=list.begin();
+		while(t!=nullptr){
+			this->push_back(*t);
+			++t;
 		}
-		for(int i=0;i<sizel-1;i++)
-			array[i]->next=array[i+1];
-		for(int i=1;i<sizel;i++)
-			array[i]->prev=array[i-1];
-
-		this->head=array[0];
-		this->head->prev=nullptr;
-		this->tail=array[sizel-1];
-		this->head->prev=nullptr;
         }
 
         string name() {
@@ -127,15 +135,19 @@ class LinkedList : public List<T> {
         }
 
         BidirectionalIterator<T> begin() {
-            // TODO
+		return BidirectionalIterator<T>(this->head);
         }
 
-	    BidirectionalIterator<T> end() {
-            // TODO
+	BidirectionalIterator<T> end() {
+		return nullptr;
         }
 
         void merge(LinkedList<T> list) {
-            // TODO
+		BidirectionalIterator<T> tmp=list.begin();
+		while(tmp!=nullptr){
+			this->push_back(*tmp);
+			++tmp;
+		}
         }
 };
 
